@@ -32,12 +32,16 @@ class App extends React.Component {
     }
 
     handleQueryChange(e) {
-        this.state({
+        this.setState({
             query: e.currentTarget.value
         });
     }
 
     handleSearchClick(e) {
+        this.setState({
+            photos: []
+        });
+
         const query = this.state.query;
 
         if (query.length < 2) {
@@ -59,7 +63,7 @@ class App extends React.Component {
             <div>
                 <input type="text" value={this.state.query} onChange={this.handleQueryChange.bind(this)}/>
                 <button onClick={this.handleSearchClick.bind(this)}>Search</button>
-                <ImageGrid photos={this.state.photos} />
+                <ImageGrid photos={this.state.photos} spacing={5} maxRowHeight={200}/>
             </div>
         );
     }
