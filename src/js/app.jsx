@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ImageGrid from './components/ImageGrid';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            photos: [],
             query: 'kittens'
         };
     }
@@ -24,7 +26,9 @@ class App extends React.Component {
             });
         }
 
-        console.log(photos);
+        this.setState({
+            photos: photos
+        });
     }
 
     handleQueryChange(e) {
@@ -55,6 +59,7 @@ class App extends React.Component {
             <div>
                 <input type="text" value={this.state.query} onChange={this.handleQueryChange.bind(this)}/>
                 <button onClick={this.handleSearchClick.bind(this)}>Search</button>
+                <ImageGrid photos={this.state.photos} />
             </div>
         );
     }
