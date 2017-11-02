@@ -11,6 +11,8 @@ class ImageGridItem extends React.Component {
             offsetX: 0,
             offsetY: 0
         };
+
+        this.handleImageLoad = this.handleImageLoad.bind(this);
     }
 
     handleImageLoad(e) {
@@ -28,7 +30,7 @@ class ImageGridItem extends React.Component {
     render() {
         return (
             <img
-                onLoad={this.handleImageLoad.bind(this)}
+                onLoad={this.handleImageLoad}
                 src={this.props.url}
                 alt={this.props.title}
                 width={this.state.width}

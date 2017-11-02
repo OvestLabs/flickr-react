@@ -10,6 +10,9 @@ class App extends React.Component {
             photos: [],
             query: 'kittens'
         };
+
+        this.handleQueryChange = this.handleQueryChange.bind(this);
+        this.handleSearchClick = this.handleSearchClick.bind(this);
     }
 
     parseUrls(data) {
@@ -61,8 +64,8 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <input type="text" value={this.state.query} onChange={this.handleQueryChange.bind(this)}/>
-                <button onClick={this.handleSearchClick.bind(this)}>Search</button>
+                <input type="text" value={this.state.query} onChange={this.handleQueryChange}/>
+                <button onClick={this.handleSearchClick}>Search</button>
                 <ImageGrid photos={this.state.photos} spacing={5} maxRowHeight={200}/>
             </div>
         );
