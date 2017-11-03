@@ -78,7 +78,7 @@ class App extends React.Component {
             photos: []
         });
 
-        const query = this.state.query;
+        const query = this.state.query.trim();
 
         if (query.length < 2) {
             return;
