@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ImageGrid from './components/ImageGrid';
+import HistoryList from './components/HistoryList';
 
 class App extends React.Component {
     constructor(props) {
@@ -9,7 +10,8 @@ class App extends React.Component {
         this.state = {
             photos: [],
             history: [],
-            query: 'kittens'
+            query: 'kittens',
+            showHistory: false
         };
 
         this.handleQueryChange = this.handleQueryChange.bind(this);
@@ -90,8 +92,10 @@ class App extends React.Component {
 
     handleHistoryClick() {
         const history = this.state.history;
-
-        console.log(history);
+        
+        this.setState({
+            showHistory: true
+        })
     }
 
     handleLoadMore() {
@@ -101,12 +105,21 @@ class App extends React.Component {
     }
 
     render() {
+        let body;
+
+        if (this.state.showHistory) {
+            body = (<HistoryList items={this.state.history} />);
+        }
+        else {
+            body = (<ImageGrid onLoadMore={this.handleLoadMore} photos={this.state.photos} spacing={5} maxRowHeight={200}/>);
+        }
+
         return (
             <div>
                 <input type="text" value={this.state.query} onChange={this.handleQueryChange}/>
                 <button onClick={this.handleSearchClick}>Search</button>
                 <button onClick={this.handleHistoryClick}>History</button>
-                <ImageGrid onLoadMore={this.handleLoadMore} photos={this.state.photos} spacing={5} maxRowHeight={200}/>
+                {body}
             </div>
         );
     }
