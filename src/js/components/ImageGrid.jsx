@@ -10,68 +10,116 @@ class ImageGrid extends React.Component {
         this.state = {
             photos: []
         };
+
+        this.loadedImages = [];
+        this.handleWindowResize = this.handleWindowResize.bind(this);
+        this.handleDocumentScroll = this.handleDocumentScroll.bind(this);
     }
 
     componentDidMount() {
-        window.addEventListener('resize', () => this.adjustGrid());
+        window.addEventListener('resize', this.handleWindowResize);
+        document.addEventListener('scroll', this.handleDocumentScroll);
     }
 
     adjustGrid() {
-        const container = ReactDOM.findDOMNode(this);
-        const rowWidth = container.clientWidth; 
+        const node = ReactDOM.findDOMNode(this);
+        const rowWidth = node.clientWidth; 
         const rowHeight = this.props.maxRowHeight;
         const spacing = this.props.spacing;
         let offsetY = 0;
-        let currentRow = new ImageGridRow(rowWidth, rowHeight, spacing, offsetY);
+        let row = new ImageGridRow(rowWidth, rowHeight, spacing, offsetY);
 
         for (let i = 0; i < this.loadedImages.length; i++) {
-            currentRow.addImage(this.loadedImages[i]);
+            row.addImage(this.loadedImages[i]);
 
-            if (!currentRow.isFull) {
+            if (!row.isFull) {
                 continue;
             }
 
-            offsetY += currentRow.computedHeight + spacing;
-            currentRow = new ImageGridRow(rowWidth, rowHeight, spacing, offsetY);
+            row.finalize();
+
+            offsetY += row.computedHeight + spacing;
+            row = new ImageGridRow(rowWidth, rowHeight, spacing, offsetY);
         }
 
-        currentRow.finalize();
+        row.finalize();
+        this.currentRow = row;
+
+        const height = row.offsetY + row.computedHeight + spacing;
+        node.style.height = `${height}px`;
     }
 
     startNewRow(offsetY) {
-        const container = ReactDOM.findDOMNode(this);
-        const rowWidth = container.clientWidth; 
+        const node = ReactDOM.findDOMNode(this);
+        const rowWidth = node.clientWidth; 
         const rowHeight = this.props.maxRowHeight;
         const spacing = this.props.spacing;
 
         this.currentRow = new ImageGridRow(rowWidth, rowHeight, spacing, offsetY);
+
+        return this.currentRow;
+    }
+
+    getCurrentRow() {
+        let row = this.currentRow;
+
+        if (!row) {
+            return this.startNewRow(0);
+        }
+
+        if (row.isFull) {
+            return this.startNewRow(row.offsetY + row.computedHeight + this.props.spacing);
+        }
+
+        return row;
     }
 
     handleImageLoad(index, e) {
         this.loadedImages.push(e);
 
-        if (!this.currentRow) {
-            this.startNewRow(this.offsetY);
+        const row = this.getCurrentRow();
+        const isFinished = this.loadedImages.length === this.props.photos.length;
+
+        row.addImage(e);
+
+        if (!isFinished && !row.isFull) {
+            return;
         }
 
-        this.currentRow.addImage(e);
+        row.finalize();
+        
+        const node = ReactDOM.findDOMNode(this);
+        const height = row.offsetY + row.computedHeight + this.props.spacing;
+        node.style.height = `${height}px`;
+    }
 
-        if (this.currentRow.isFull) {
-            this.offsetY += this.currentRow.computedHeight + this.props.spacing;
-            this.currentRow = null;
+    handleWindowResize() {
+        this.adjustGrid();
+    }
+
+    handleDocumentScroll() {
+        const onLoadMore = this.props.onLoadMore;
+
+        if (typeof onLoadMore !== 'function') {
+            return;
         }
-        else if (this.loadedImages.length === this.props.photos.length) {
-            this.currentRow.finalize();
+
+        if (this.loadedImages.length !== this.props.photos.length) {
+            return;
+        }
+
+        const node = ReactDOM.findDOMNode(this);
+        const bounds = node.getBoundingClientRect();
+        const threshold = bounds.bottom - this.props.maxRowHeight * 2;
+
+        if (threshold <= window.innerHeight) {
+            onLoadMore();
         }
     }
 
     renderPhotos() {
         const photos = this.props.photos;
         
-        this.loadedImages = [];
-        this.offsetY = 0;
-        this.currentRow = null;
-
         const items = photos.map((photo, index) => (
             <ImageGridItem
                 onLoad={this.handleImageLoad.bind(this, index)} 
@@ -93,7 +141,8 @@ class ImageGrid extends React.Component {
 
 ImageGrid.defaultProps = {
     spacing: 5,
-    maxRowHeight: 200
+    maxRowHeight: 200,
+    onLoadMore: function() { /* left blank intentionally */ }
 };
 
 export default ImageGrid;

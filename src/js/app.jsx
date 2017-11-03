@@ -13,14 +13,30 @@ class App extends React.Component {
 
         this.handleQueryChange = this.handleQueryChange.bind(this);
         this.handleSearchClick = this.handleSearchClick.bind(this);
+        this.handleLoadMore = this.handleLoadMore.bind(this);
     }
 
-    parseUrls(data) {
-        const photoList = data.photo;
-        const photos = [];
+    fetchPhotos(query, page) {
+        const url = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=3e7cc266ae2b0e0d78e279ce8e361736&format=json&nojsoncallback=1&safe_search=1&text=${query}&page=${page}`;
 
-        for (var i = 0; i < photoList.length; i++) {
-            const item = photoList[i];
+        this.isFetching = true;
+
+        fetch(url)
+            .then((response) => {
+                return response.json();
+            }).then((json) => {
+                this.parseUrls(json.photos);
+                this.isFetching = false;
+                this.currentPage = page;
+            });
+    }
+    
+    parseUrls(data) {
+        const results = data.photo;
+        const photos = this.state.photos.slice();
+
+        for (var i = 0; i < results.length; i++) {
+            const item = results[i];
             const url = `https://farm${item.farm}.static.flickr.com/${item.server}/${item.id}_${item.secret}.jpg`;
 
             photos.push({
@@ -47,18 +63,15 @@ class App extends React.Component {
 
         const query = this.state.query;
 
-        if (query.length < 2) {
-            return;
+        if (query.length >= 2) {
+            this.fetchPhotos(query, 1);
         }
+    }
 
-        const url = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=3e7cc266ae2b0e0d78e279ce8e361736&format=json&nojsoncallback=1&safe_search=1&text=${query}`;
-
-        fetch(url)
-            .then((response) => {
-                return response.json();
-            }).then((json) => {
-                this.parseUrls(json.photos);
-            });
+    handleLoadMore() {
+        if (!this.isFetching) {
+            this.fetchPhotos(this.state.query, this.currentPage + 1);
+        }
     }
 
     render() {
@@ -66,7 +79,7 @@ class App extends React.Component {
             <div>
                 <input type="text" value={this.state.query} onChange={this.handleQueryChange}/>
                 <button onClick={this.handleSearchClick}>Search</button>
-                <ImageGrid photos={this.state.photos} spacing={5} maxRowHeight={200}/>
+                <ImageGrid onLoadMore={this.handleLoadMore} photos={this.state.photos} spacing={5} maxRowHeight={200}/>
             </div>
         );
     }
