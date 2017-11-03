@@ -78,7 +78,8 @@ class App extends React.Component {
 
     handleSearchClick(e) {
         this.setState({
-            photos: []
+            photos: [],
+            showHistory: false
         });
 
         const query = this.state.query.trim();
