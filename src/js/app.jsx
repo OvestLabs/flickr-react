@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ImageGrid from './components/ImageGrid';
+import HistoryList from './components/HistoryList';
 
 class App extends React.Component {
     constructor(props) {
@@ -8,12 +9,16 @@ class App extends React.Component {
 
         this.state = {
             photos: [],
-            query: 'kittens'
+            history: [],
+            query: 'kittens',
+            showHistory: false
         };
 
         this.handleQueryChange = this.handleQueryChange.bind(this);
         this.handleSearchClick = this.handleSearchClick.bind(this);
+        this.handleHistoryClick = this.handleHistoryClick.bind(this);
         this.handleLoadMore = this.handleLoadMore.bind(this);
+        this.handleHistorySelected = this.handleHistorySelected.bind(this);
     }
 
     fetchPhotos(query, page) {
@@ -50,6 +55,21 @@ class App extends React.Component {
         });
     }
 
+    addToHistory(query) {
+        const newHistory = this.state.history.slice();
+        const existingIndex = newHistory.indexOf(query);
+
+        if (existingIndex >= 0) {
+            newHistory.splice(existingIndex, 1);
+        }
+        
+        newHistory.push(query);
+
+        this.setState({
+            history: newHistory
+        });
+    }
+
     handleQueryChange(e) {
         this.setState({
             query: e.currentTarget.value
@@ -58,14 +78,26 @@ class App extends React.Component {
 
     handleSearchClick(e) {
         this.setState({
-            photos: []
+            photos: [],
+            showHistory: false
         });
 
-        const query = this.state.query;
+        const query = this.state.query.trim();
 
-        if (query.length >= 2) {
-            this.fetchPhotos(query, 1);
+        if (query.length < 2) {
+            return;
         }
+
+        this.fetchPhotos(query, 1);
+        this.addToHistory(query);
+    }
+
+    handleHistoryClick() {
+        const history = this.state.history;
+        
+        this.setState({
+            showHistory: true
+        })
     }
 
     handleLoadMore() {
@@ -74,12 +106,39 @@ class App extends React.Component {
         }
     }
 
+    handleHistorySelected(query) {
+        if (this.state.query === query) {
+            this.setState({
+                showHistory: false
+            });
+            return;
+        }
+
+        this.setState({
+            photos: [],
+            query: query,
+            showHistory: false
+        });
+
+        this.fetchPhotos(query, 1);
+    }
+
     render() {
+        let body;
+
+        if (this.state.showHistory) {
+            body = (<HistoryList items={this.state.history} onSelected={this.handleHistorySelected} />);
+        }
+        else {
+            body = (<ImageGrid onLoadMore={this.handleLoadMore} photos={this.state.photos} spacing={5} maxRowHeight={200}/>);
+        }
+
         return (
             <div>
                 <input type="text" value={this.state.query} onChange={this.handleQueryChange}/>
                 <button onClick={this.handleSearchClick}>Search</button>
-                <ImageGrid onLoadMore={this.handleLoadMore} photos={this.state.photos} spacing={5} maxRowHeight={200}/>
+                <button onClick={this.handleHistoryClick}>History</button>
+                {body}
             </div>
         );
     }

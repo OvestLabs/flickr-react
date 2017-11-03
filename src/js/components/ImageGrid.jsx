@@ -21,6 +21,11 @@ class ImageGrid extends React.Component {
         document.addEventListener('scroll', this.handleDocumentScroll);
     }
 
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleWindowResize);
+        document.removeEventListener('scroll', this.handleDocumentScroll);
+    }
+
     adjustGrid() {
         const node = ReactDOM.findDOMNode(this);
         const rowWidth = node.clientWidth; 
@@ -119,6 +124,10 @@ class ImageGrid extends React.Component {
 
     renderPhotos() {
         const photos = this.props.photos;
+
+        if (photos.length === 0) {
+            this.currentRow = null;
+        }
         
         const items = photos.map((photo, index) => (
             <ImageGridItem
