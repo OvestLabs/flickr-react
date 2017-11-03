@@ -18,6 +18,7 @@ class App extends React.Component {
         this.handleSearchClick = this.handleSearchClick.bind(this);
         this.handleHistoryClick = this.handleHistoryClick.bind(this);
         this.handleLoadMore = this.handleLoadMore.bind(this);
+        this.handleHistorySelected = this.handleHistorySelected.bind(this);
     }
 
     fetchPhotos(query, page) {
@@ -104,11 +105,28 @@ class App extends React.Component {
         }
     }
 
+    handleHistorySelected(query) {
+        if (this.state.query === query) {
+            this.setState({
+                showHistory: false
+            });
+            return;
+        }
+
+        this.setState({
+            photos: [],
+            query: query,
+            showHistory: false
+        });
+
+        this.fetchPhotos(query, 1);
+    }
+
     render() {
         let body;
 
         if (this.state.showHistory) {
-            body = (<HistoryList items={this.state.history} />);
+            body = (<HistoryList items={this.state.history} onSelected={this.handleHistorySelected} />);
         }
         else {
             body = (<ImageGrid onLoadMore={this.handleLoadMore} photos={this.state.photos} spacing={5} maxRowHeight={200}/>);

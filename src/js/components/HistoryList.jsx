@@ -4,11 +4,24 @@ import ReactDOM from 'react-dom';
 class HistoryList extends React.Component {
     constructor(props) {
         super(props);        
+
+        this.handleItemClick = this.handleItemClick.bind(this);
+    }
+
+    handleItemClick(index, e) {
+        e.preventDefault();
+
+        const query = this.props.items[index];
+        const onSelected = this.props.onSelected;
+
+        if (typeof onSelected === 'function') {
+            onSelected(query);
+        }
     }
 
     render() {
         const listItems = this.props.items.map((query, index) => (
-            <li key={index}>{query}</li>
+            <li key={index} onClick={this.handleItemClick.bind(this, index)}>{query}</li>
         ));
 
         return (
@@ -21,7 +34,8 @@ class HistoryList extends React.Component {
 };
 
 HistoryList.defaultProps = {
-    items: []
+    items: [],
+    onSelected: function() { /* left blank intentionally */ }
 };
 
 export default HistoryList;
