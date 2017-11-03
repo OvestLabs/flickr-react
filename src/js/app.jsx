@@ -8,11 +8,13 @@ class App extends React.Component {
 
         this.state = {
             photos: [],
+            history: [],
             query: 'kittens'
         };
 
         this.handleQueryChange = this.handleQueryChange.bind(this);
         this.handleSearchClick = this.handleSearchClick.bind(this);
+        this.handleHistoryClick = this.handleHistoryClick.bind(this);
         this.handleLoadMore = this.handleLoadMore.bind(this);
     }
 
@@ -50,6 +52,21 @@ class App extends React.Component {
         });
     }
 
+    addToHistory(query) {
+        const newHistory = this.state.history.slice();
+        const existingIndex = newHistory.indexOf(query);
+
+        if (existingIndex >= 0) {
+            newHistory.splice(existingIndex, 1);
+        }
+        
+        newHistory.push(query);
+
+        this.setState({
+            history: newHistory
+        });
+    }
+
     handleQueryChange(e) {
         this.setState({
             query: e.currentTarget.value
@@ -63,9 +80,18 @@ class App extends React.Component {
 
         const query = this.state.query;
 
-        if (query.length >= 2) {
-            this.fetchPhotos(query, 1);
+        if (query.length < 2) {
+            return;
         }
+
+        this.fetchPhotos(query, 1);
+        this.addToHistory(query);
+    }
+
+    handleHistoryClick() {
+        const history = this.state.history;
+
+        console.log(history);
     }
 
     handleLoadMore() {
@@ -79,6 +105,7 @@ class App extends React.Component {
             <div>
                 <input type="text" value={this.state.query} onChange={this.handleQueryChange}/>
                 <button onClick={this.handleSearchClick}>Search</button>
+                <button onClick={this.handleHistoryClick}>History</button>
                 <ImageGrid onLoadMore={this.handleLoadMore} photos={this.state.photos} spacing={5} maxRowHeight={200}/>
             </div>
         );
