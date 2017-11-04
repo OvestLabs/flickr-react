@@ -48,6 +48,10 @@ header {
     color: #666;
 }
 
+.search > input:focus {
+    outline-width:0;
+}
+
 .search > button {
     margin:0 16px 0 0;
 }
