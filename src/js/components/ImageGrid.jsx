@@ -127,6 +127,7 @@ class ImageGrid extends React.Component {
 
         if (photos.length === 0) {
             this.currentRow = null;
+            this.loadedImages = [];
         }
         
         const items = photos.map((photo, index) => (
