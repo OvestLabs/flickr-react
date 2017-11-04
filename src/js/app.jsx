@@ -101,10 +101,8 @@ class App extends React.Component {
     }
 
     handleHistoryClick() {
-        const history = this.state.history;
-        
         this.setState({
-            showHistory: true
+            showHistory: !this.state.showHistory
         })
     }
 
