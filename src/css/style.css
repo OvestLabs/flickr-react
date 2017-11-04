@@ -105,6 +105,21 @@ button:focus {
     border-bottom: 1px solid #eee;
 }
 
+.loader {
+    border: 3px solid white; 
+    border-top: 3px solid #aaa; 
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin .75s linear infinite;
+    margin:100px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 @media screen and (max-width: 700px) {
     .centered-content {
         max-width: 100%;

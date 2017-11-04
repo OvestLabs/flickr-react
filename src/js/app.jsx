@@ -146,6 +146,7 @@ class App extends React.Component {
                 </header>
                 {history}
                 <ImageGrid onLoadMore={this.handleLoadMore} photos={this.state.photos} spacing={5} maxRowHeight={200}/>
+                {noHistory ? null : <div className='loader'></div>}
             </div>
         );
     }
