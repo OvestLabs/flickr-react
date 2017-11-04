@@ -62,3 +62,9 @@ header {
     width: 40px;
     height: 40px;
 }
+
+input:focus,
+button:focus {
+    outline-width:0;
+    outline:none;
+}
