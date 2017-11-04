@@ -66,6 +66,10 @@ button:focus {
     height: 30px;
 }
 
+.search button:disabled {
+    opacity: .25;
+}
+
 .imageGrid {
     margin-top:66px;
     position: relative;

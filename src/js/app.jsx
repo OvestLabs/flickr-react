@@ -134,12 +134,14 @@ class App extends React.Component {
             ? (<HistoryList items={this.state.history} onSelected={this.handleHistorySelected} />)
             : null;
 
+        const noHistory = this.state.history.length === 0;
+
         return (
             <div>
                 <header>
                     <div className='search centered-content'>
                         <input type="text" value={this.state.query} onChange={this.handleQueryChange} onKeyUp={this.handleSearchKeyUp}/>
-                        <button onClick={this.handleHistoryClick}>History</button>
+                        <button onClick={this.handleHistoryClick} disabled={noHistory}>History</button>
                     </div>
                 </header>
                 {history}
