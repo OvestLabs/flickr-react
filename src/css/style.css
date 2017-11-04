@@ -52,6 +52,7 @@ button:focus {
     border-right: 1px solid rgba(0,0,0,.15);
     font-size:21px;
     color: #666;
+    min-width: 0;
 }
 
 .search > input:focus {
@@ -65,8 +66,8 @@ button:focus {
     background-size: contain;
     border: none;
     text-indent: -9999px;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
 }
 
 .imageGrid {
