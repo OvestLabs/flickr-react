@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import ImageGrid from './components/ImageGrid';
 import HistoryList from './components/HistoryList';
 
+import '../css/style.css';
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -11,11 +13,15 @@ class App extends React.Component {
             photos: [],
             history: [],
             query: 'kittens',
-            showHistory: false
+            lastQuery: null,
+            showHistory: false,
+            currentPage: 0,
+            totalPages: 0,
+            isFetching: false
         };
 
         this.handleQueryChange = this.handleQueryChange.bind(this);
-        this.handleSearchClick = this.handleSearchClick.bind(this);
+        this.handleSearchKeyUp = this.handleSearchKeyUp.bind(this);
         this.handleHistoryClick = this.handleHistoryClick.bind(this);
         this.handleLoadMore = this.handleLoadMore.bind(this);
         this.handleHistorySelected = this.handleHistorySelected.bind(this);
@@ -24,15 +30,24 @@ class App extends React.Component {
     fetchPhotos(query, page) {
         const url = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=3e7cc266ae2b0e0d78e279ce8e361736&format=json&nojsoncallback=1&safe_search=1&text=${query}&page=${page}`;
 
-        this.isFetching = true;
+        this.setState({
+            isFetching: true,
+            lastQuery: query
+        })
 
         fetch(url)
             .then((response) => {
                 return response.json();
-            }).then((json) => {
-                this.parseUrls(json.photos);
-                this.isFetching = false;
-                this.currentPage = page;
+            })
+            .then((json) => {
+                const photos = this.parseUrls(json.photos);
+
+                this.setState({
+                    photos: photos,
+                    currentPage: page,
+                    totalPages: json.photos.pages,
+                    isFetching: false
+                })
             });
     }
     
@@ -50,9 +65,7 @@ class App extends React.Component {
             });
         }
 
-        this.setState({
-            photos: photos
-        });
+        return photos;
     }
 
     addToHistory(query) {
@@ -76,7 +89,13 @@ class App extends React.Component {
         });
     }
 
-    handleSearchClick(e) {
+    handleSearchKeyUp(e) {
+        if (e.key !== 'Enter') {
+            return;
+        }
+
+        e.currentTarget.blur();
+
         this.setState({
             photos: [],
             showHistory: false
@@ -93,16 +112,14 @@ class App extends React.Component {
     }
 
     handleHistoryClick() {
-        const history = this.state.history;
-        
         this.setState({
-            showHistory: true
+            showHistory: !this.state.showHistory
         })
     }
 
     handleLoadMore() {
-        if (!this.isFetching) {
-            this.fetchPhotos(this.state.query, this.currentPage + 1);
+        if (!this.state.isFetching) {
+            this.fetchPhotos(this.state.query, this.state.currentPage + 1);
         }
     }
 
@@ -123,22 +140,58 @@ class App extends React.Component {
         this.fetchPhotos(query, 1);
     }
 
-    render() {
-        let body;
+    renderHistory() {
+        return this.state.showHistory
+            ? (<HistoryList items={this.state.history} onSelected={this.handleHistorySelected} />)
+            : null;
+    }
 
-        if (this.state.showHistory) {
-            body = (<HistoryList items={this.state.history} onSelected={this.handleHistorySelected} />);
+    renderLoader() {
+        const state = this.state;
+
+        if (state.isFetching || state.currentPage < state.totalPages) {
+            return <div className='loader'></div>;
         }
-        else {
-            body = (<ImageGrid onLoadMore={this.handleLoadMore} photos={this.state.photos} spacing={5} maxRowHeight={200}/>);
+
+        return null;
+    }
+
+    renderGrid() {
+        const state = this.state;
+        const photos = state.photos;
+        
+        if (photos.length > 0) {
+            return <ImageGrid onLoadMore={this.handleLoadMore} photos={photos} spacing={5} maxRowHeight={200}/>;
         }
+
+        if (state.isFetching) {
+            return null;
+        }
+
+        if (state.lastQuery != null && state.totalPages <= 0) {
+            return <div className='empty centered-content'>Oops! There are no matches for “{state.lastQuery}”.<br/>Please try broadening your search.</div>;
+        }
+        
+        return <div className='empty centered-content'>Let's get started!<br/>Enter your search query above.</div>;
+    }
+
+    render() {
+        const history = this.renderHistory();
+        const loader = this.renderLoader();
+        const grid = this.renderGrid();
+        const noHistory = this.state.history.length === 0;
 
         return (
             <div>
-                <input type="text" value={this.state.query} onChange={this.handleQueryChange}/>
-                <button onClick={this.handleSearchClick}>Search</button>
-                <button onClick={this.handleHistoryClick}>History</button>
-                {body}
+                <header>
+                    <div className='search centered-content'>
+                        <input type="text" value={this.state.query} onChange={this.handleQueryChange} onKeyUp={this.handleSearchKeyUp}/>
+                        <button onClick={this.handleHistoryClick} disabled={noHistory}>History</button>
+                    </div>
+                </header>
+                {history}
+                {grid}
+                {loader}
             </div>
         );
     }

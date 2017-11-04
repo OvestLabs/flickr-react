@@ -1,6 +1,139 @@
+* { 
+    margin:0;
+    padding:0;
+}
+
 body {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 16px;
-    margin: 0;
+    background-color: #f3f5f6;
+}
+
+header {
+    background-color: rgba(255,255,255,.95);
+    border-bottom: 1px solid rgba(0,0,0,.15);
+    position: fixed;
+    width: 100%;
+    height: 61px;
+    top: 0;
+    z-index: 99;
+}
+
+input:focus,
+button:focus {
+    outline-width:0;
+    outline:none;
+}
+
+.centered-content {
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height:100%;
+}
+
+.search input {
+    flex: 1 100%;
+    padding:0px 8px 0px 32px;
+    margin:0 8px 0 15px;
+    background: url(../assets/magnifying-glass.svg) no-repeat center left;
+    background-size: 18px 18px;
+    border: none;
+    border-right: 1px solid rgba(0,0,0,.15);
+    font-size:21px;
+    color: #666;
+    min-width: 0;
+}
+
+.search button {
     padding: 0;
+    margin: 0 16px 0 8px;
+    background: transparent url(../assets/history.svg) no-repeat center center;
+    background-size: contain;
+    border: none;
+    text-indent: -9999px;
+    width: 30px;
+    height: 30px;
+}
+
+.search button:disabled {
+    opacity: .25;
+}
+
+.imageGrid {
+    margin-top:66px;
+    position: relative;
+}
+
+.history {
+    position: fixed;
+    margin: 0;
+    width: 100%;
+    top: 55px;
+    left: -8px;
+    z-index: 100;
+}
+
+.history .centered-content {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.history ul {
+    list-style-type: none;
+    list-style-position: none;
+    padding:0.5em 1em;
+    width:200px;
+    height:200px;
+    overflow-y: scroll;
+    background-color: white;
+    border: 1px solid rgba(0,0,0,.19);
+    border-radius: 5px;
+    color:#666;
+}
+
+.history li {
+    padding:8px 0;
+    line-height: 1.3em;
+    border-bottom: 1px solid #eee;
+}
+
+.loader {
+    border: 3px solid white; 
+    border-top: 3px solid #aaa; 
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin .75s linear infinite;
+    margin:100px auto;
+}
+
+.empty {
+    text-align: center;
+    font-size: 19px;
+    line-height: 1.5em;
+    margin-top: 100px;
+    color: #999;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media screen and (max-width: 700px) {
+    .centered-content {
+        max-width: 100%;
+    }
+
+    .imageGrid {
+        margin-left:5px;
+    }    
 }

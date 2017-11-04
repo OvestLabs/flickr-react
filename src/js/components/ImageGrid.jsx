@@ -47,7 +47,6 @@ class ImageGrid extends React.Component {
             row = new ImageGridRow(rowWidth, rowHeight, spacing, offsetY);
         }
 
-        row.finalize();
         this.currentRow = row;
 
         const height = row.offsetY + row.computedHeight + spacing;
@@ -83,16 +82,15 @@ class ImageGrid extends React.Component {
         this.loadedImages.push(e);
 
         const row = this.getCurrentRow();
-        const isFinished = this.loadedImages.length === this.props.photos.length;
 
         row.addImage(e);
 
-        if (!isFinished && !row.isFull) {
+        if (!row.isFull) {
             return;
         }
 
         row.finalize();
-        
+
         const node = ReactDOM.findDOMNode(this);
         const height = row.offsetY + row.computedHeight + this.props.spacing;
         node.style.height = `${height}px`;
@@ -115,21 +113,15 @@ class ImageGrid extends React.Component {
 
         const node = ReactDOM.findDOMNode(this);
         const bounds = node.getBoundingClientRect();
-        const threshold = bounds.bottom - this.props.maxRowHeight * 2;
+        const threshold = bounds.bottom - this.props.maxRowHeight * 5;
 
         if (threshold <= window.innerHeight) {
             onLoadMore();
         }
     }
 
-    renderPhotos() {
-        const photos = this.props.photos;
-
-        if (photos.length === 0) {
-            this.currentRow = null;
-        }
-        
-        const items = photos.map((photo, index) => (
+    render() {
+        const items = this.props.photos.map((photo, index) => (
             <ImageGridItem
                 onLoad={this.handleImageLoad.bind(this, index)} 
                 key={index} 
@@ -138,12 +130,8 @@ class ImageGrid extends React.Component {
             />
         ));
 
-        return items;
-    }
-
-    render() {
         return (
-            <div style={{marginTop:'20px', position:'relative'}}>{this.renderPhotos()}</div>
+            <div className='imageGrid centered-content'>{items}</div>
         )
     }
 };
