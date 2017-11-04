@@ -113,7 +113,7 @@ class ImageGrid extends React.Component {
 
         const node = ReactDOM.findDOMNode(this);
         const bounds = node.getBoundingClientRect();
-        const threshold = bounds.bottom - this.props.maxRowHeight * 2;
+        const threshold = bounds.bottom - this.props.maxRowHeight * 5;
 
         if (threshold <= window.innerHeight) {
             onLoadMore();
