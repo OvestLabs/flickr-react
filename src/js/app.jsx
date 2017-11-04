@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import ImageGrid from './components/ImageGrid';
 import HistoryList from './components/HistoryList';
 
-import '../css/style.css';
+import '../css/style.scss';
 
 class App extends React.Component {
     constructor(props) {
