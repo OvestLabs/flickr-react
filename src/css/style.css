@@ -38,8 +38,14 @@ header {
 
 .search > input {
     flex: 1 100%;
-    padding:4px 8px;
-    margin:0 8px;
+    padding:0px 8px 0px 35px;
+    margin:0 5px;
+    background: url(../assets/magnifying-glass.svg) no-repeat center left;
+    background-size: contain;
+    border: none;
+    border-right: 1px solid rgba(0,0,0,.15);
+    font-size:21px;
+    color: #666;
 }
 
 .search > button {
