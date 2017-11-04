@@ -17,7 +17,7 @@ class App extends React.Component {
         };
 
         this.handleQueryChange = this.handleQueryChange.bind(this);
-        this.handleSearchClick = this.handleSearchClick.bind(this);
+        this.handleSearchKeyUp = this.handleSearchKeyUp.bind(this);
         this.handleHistoryClick = this.handleHistoryClick.bind(this);
         this.handleLoadMore = this.handleLoadMore.bind(this);
         this.handleHistorySelected = this.handleHistorySelected.bind(this);
@@ -78,7 +78,13 @@ class App extends React.Component {
         });
     }
 
-    handleSearchClick(e) {
+    handleSearchKeyUp(e) {
+        if (e.key !== 'Enter') {
+            return;
+        }
+
+        e.currentTarget.blur();
+
         this.setState({
             photos: [],
             showHistory: false
@@ -139,8 +145,7 @@ class App extends React.Component {
             <div>
                 <header>
                     <div className='search centered-content'>
-                        <input type="text" value={this.state.query} onChange={this.handleQueryChange}/>
-                        <button onClick={this.handleSearchClick}>Search</button>
+                        <input type="text" value={this.state.query} onChange={this.handleQueryChange} onKeyUp={this.handleSearchKeyUp}/>
                         <button onClick={this.handleHistoryClick}>History</button>
                     </div>
                 </header>

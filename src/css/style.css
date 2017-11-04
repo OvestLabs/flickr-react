@@ -39,5 +39,9 @@ header {
 .search > input {
     flex: 1 100%;
     padding:4px 8px;
-    margin:0 5px;
+    margin:0 8px;
+}
+
+.search > button {
+    margin:0 16px 0 0;
 }
