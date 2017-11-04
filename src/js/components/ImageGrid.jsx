@@ -47,7 +47,6 @@ class ImageGrid extends React.Component {
             row = new ImageGridRow(rowWidth, rowHeight, spacing, offsetY);
         }
 
-        row.finalize();
         this.currentRow = row;
 
         const height = row.offsetY + row.computedHeight + spacing;
@@ -83,16 +82,15 @@ class ImageGrid extends React.Component {
         this.loadedImages.push(e);
 
         const row = this.getCurrentRow();
-        const isFinished = this.loadedImages.length === this.props.photos.length;
 
         row.addImage(e);
 
-        if (!isFinished && !row.isFull) {
+        if (!row.isFull) {
             return;
         }
 
         row.finalize();
-        
+
         const node = ReactDOM.findDOMNode(this);
         const height = row.offsetY + row.computedHeight + this.props.spacing;
         node.style.height = `${height}px`;
