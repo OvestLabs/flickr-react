@@ -115,6 +115,14 @@ button:focus {
     margin:100px auto;
 }
 
+.empty {
+    text-align: center;
+    font-size: 19px;
+    line-height: 1.5em;
+    margin-top: 100px;
+    color: #999;
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }

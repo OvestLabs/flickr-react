@@ -13,6 +13,7 @@ class App extends React.Component {
             photos: [],
             history: [],
             query: 'kittens',
+            lastQuery: null,
             showHistory: false,
             currentPage: 0,
             totalPages: 0,
@@ -30,7 +31,8 @@ class App extends React.Component {
         const url = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=3e7cc266ae2b0e0d78e279ce8e361736&format=json&nojsoncallback=1&safe_search=1&text=${query}&page=${page}`;
 
         this.setState({
-            isFetching: true
+            isFetching: true,
+            lastQuery: query
         })
 
         fetch(url)
@@ -155,10 +157,21 @@ class App extends React.Component {
     }
 
     renderGrid() {
-        if (this.state.photos.length > 0) {
-            return <ImageGrid onLoadMore={this.handleLoadMore} photos={this.state.photos} spacing={5} maxRowHeight={200}/>;
+        const state = this.state;
+        const photos = state.photos;
+        
+        if (photos.length > 0) {
+            return <ImageGrid onLoadMore={this.handleLoadMore} photos={photos} spacing={5} maxRowHeight={200}/>;
         }
 
+        if (state.isFetching) {
+            return null;
+        }
+
+        if (state.lastQuery != null && state.totalPages <= 0) {
+            return <div className='empty centered-content'>Oops! There are no matches for “{state.lastQuery}”.<br/>Please try broadening your search.</div>;
+        }
+        
         return null;
     }
 
