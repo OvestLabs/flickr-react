@@ -138,7 +138,7 @@ class App extends React.Component {
         return (
             <div>
                 <header>
-                    <div className='centered-content'>
+                    <div className='search centered-content'>
                         <input type="text" value={this.state.query} onChange={this.handleQueryChange}/>
                         <button onClick={this.handleSearchClick}>Search</button>
                         <button onClick={this.handleHistoryClick}>History</button>
