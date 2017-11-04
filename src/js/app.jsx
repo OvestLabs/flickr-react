@@ -130,14 +130,9 @@ class App extends React.Component {
     }
 
     render() {
-        let body;
-
-        if (this.state.showHistory) {
-            body = (<HistoryList items={this.state.history} onSelected={this.handleHistorySelected} />);
-        }
-        else {
-            body = (<ImageGrid onLoadMore={this.handleLoadMore} photos={this.state.photos} spacing={5} maxRowHeight={200}/>);
-        }
+        const history = this.state.showHistory
+            ? (<HistoryList items={this.state.history} onSelected={this.handleHistorySelected} />)
+            : null;
 
         return (
             <div>
@@ -147,7 +142,8 @@ class App extends React.Component {
                         <button onClick={this.handleHistoryClick}>History</button>
                     </div>
                 </header>
-                {body}
+                {history}
+                <ImageGrid onLoadMore={this.handleLoadMore} photos={this.state.photos} spacing={5} maxRowHeight={200}/>
             </div>
         );
     }

@@ -25,9 +25,10 @@ class HistoryList extends React.Component {
         ));
 
         return (
-            <div>
-                <h1>History!</h1>
-                <ul>{listItems}</ul>
+            <div className='history'>
+                <div className='container centered-content'>
+                    <ul>{listItems}</ul>
+                </div>
             </div>
         );
     }
