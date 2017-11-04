@@ -120,15 +120,8 @@ class ImageGrid extends React.Component {
         }
     }
 
-    renderPhotos() {
-        const photos = this.props.photos;
-
-        if (photos.length === 0) {
-            this.currentRow = null;
-            this.loadedImages = [];
-        }
-        
-        const items = photos.map((photo, index) => (
+    render() {
+        const items = this.props.photos.map((photo, index) => (
             <ImageGridItem
                 onLoad={this.handleImageLoad.bind(this, index)} 
                 key={index} 
@@ -137,12 +130,8 @@ class ImageGrid extends React.Component {
             />
         ));
 
-        return items;
-    }
-
-    render() {
         return (
-            <div className='imageGrid centered-content'>{this.renderPhotos()}</div>
+            <div className='imageGrid centered-content'>{items}</div>
         )
     }
 };
