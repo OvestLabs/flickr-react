@@ -143,7 +143,7 @@ class ImageGrid extends React.Component {
 
     render() {
         return (
-            <div style={{marginTop:'20px', position:'relative'}}>{this.renderPhotos()}</div>
+            <div className='imageGrid centered-content'>{this.renderPhotos()}</div>
         )
     }
 };

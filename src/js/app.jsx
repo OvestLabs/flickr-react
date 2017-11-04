@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import ImageGrid from './components/ImageGrid';
 import HistoryList from './components/HistoryList';
 
+import '../css/style.css';
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -135,9 +137,13 @@ class App extends React.Component {
 
         return (
             <div>
-                <input type="text" value={this.state.query} onChange={this.handleQueryChange}/>
-                <button onClick={this.handleSearchClick}>Search</button>
-                <button onClick={this.handleHistoryClick}>History</button>
+                <header>
+                    <div className='centered-content'>
+                        <input type="text" value={this.state.query} onChange={this.handleQueryChange}/>
+                        <button onClick={this.handleSearchClick}>Search</button>
+                        <button onClick={this.handleHistoryClick}>History</button>
+                    </div>
+                </header>
                 {body}
             </div>
         );
