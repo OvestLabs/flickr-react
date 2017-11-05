@@ -8,7 +8,9 @@ $header-height: 61px;
 $max-row-height: 200px;
 $gutter-size: 5px;
 
-
+@function myBorder($color: $border-color, $size: $border-size) {
+    @return $size solid $color;
+}
 
 * { 
     margin:0;
@@ -23,7 +25,7 @@ body {
 
 header {
     background-color: rgba($header-background-color, .95);
-    border-bottom: $border-size solid $border-color;
+    border-bottom: myBorder();
     position: fixed;
     width: 100%;
     height: $header-height;
@@ -57,7 +59,7 @@ button:focus {
         background: url(../assets/magnifying-glass.svg) no-repeat center left;
         background-size: 18px 18px;
         border: none;
-        border-right: $border-size solid $border-color;
+        border-right: myBorder();
         font-size:21px;
         color: $foreground-color;
         min-width: 0;
@@ -106,13 +108,13 @@ button:focus {
         height: $max-row-height;
         overflow-y: scroll;
         background-color: $header-background-color;
-        border: $border-size solid $border-color;
+        border: myBorder();
         border-radius: 5px;
 
         li {
             padding: $offset 0;
             line-height: 1.3em;
-            border-bottom: $border-size solid rgba($border-color, .05);
+            border-bottom: myBorder(rgba($border-color, .05));
             cursor: pointer;
         }
     }
@@ -121,10 +123,10 @@ button:focus {
 .loader {
     $half-height: $max-row-height / 2;
     $size: $max-row-height / 10;
-    $border-size: $max-row-height / 100;
+    $my-border-size: $max-row-height / 100;
 
-    border: $border-size solid $header-background-color; 
-    border-top: $border-size solid rgba($foreground-color, .75); 
+    border: myBorder($header-background-color, $my-border-size); 
+    border-top: myBorder(rgba($foreground-color, .75), $my-border-size); 
     border-radius: 50%;
     width: $size;
     height: $size;
