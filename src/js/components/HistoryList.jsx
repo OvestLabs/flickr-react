@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+/**
+ * Renders a collection of previously searched queries.
+ */
 class HistoryList extends React.Component {
     constructor(props) {
         super(props);        
