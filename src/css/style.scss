@@ -84,6 +84,11 @@ button:focus {
 .imageGrid {
     margin-top: $header-height + $gutter-size;
     position: relative;
+
+    .item {
+        position: absolute;
+        background-color: #ccc;
+    }
 }
 
 .history {

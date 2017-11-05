@@ -5,42 +5,30 @@ class ImageGridItem extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            width: 0,
-            height: 0,
-            offsetX: 0,
-            offsetY: 0
-        };
-
         this.handleImageLoad = this.handleImageLoad.bind(this);
     }
 
     handleImageLoad(e) {
-        const element = e.currentTarget;
-        const onLoad = this.props.onLoad;
+        // const element = e.currentTarget;
+        // const onLoad = this.props.onLoad;
 
-        this.imageWidth = element.naturalWidth;
-        this.imageHeight = element.naturalHeight;
-
-        if (typeof onLoad === 'function') {
-            onLoad(this);
-        }
+        // if (typeof onLoad === 'function') {
+        //     onLoad(this);
+        // }
     }
 
     render() {
+        const props = this.props;
+
         return (
-            <img
-                onLoad={this.handleImageLoad}
-                src={this.props.url}
-                alt={this.props.title}
-                width={this.state.width}
-                height={this.state.height}
+            <div className='item'
                 style={{
-                    position: 'absolute',
-                    left: this.state.offsetX + 'px',
-                    top: this.state.offsetY + 'px',
+                    left: `${props.offsetX}px`,
+                    top: `${props.offsetY}px`,
+                    width: `${props.width}px`,
+                    height: `${props.height}px`
                 }}
-            />
+            ><img src={props.url} width={props.width} height={props.height} onLoad={this.handleImageLoad} alt={props.title}/></div>
         );
     }
 }

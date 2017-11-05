@@ -28,7 +28,7 @@ class App extends React.Component {
     }
 
     fetchPhotos(query, page) {
-        const url = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=3e7cc266ae2b0e0d78e279ce8e361736&format=json&nojsoncallback=1&safe_search=1&text=${query}&page=${page}`;
+        const url = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=3e7cc266ae2b0e0d78e279ce8e361736&format=json&nojsoncallback=1&safe_search=1&extras=url_m&text=${query}&page=${page}`;
 
         this.setState({
             isFetching: true,
@@ -57,11 +57,18 @@ class App extends React.Component {
 
         for (var i = 0; i < results.length; i++) {
             const item = results[i];
+
+            if (!item.width_m || !item.height_m) {
+                continue;
+            }
+
             const url = `https://farm${item.farm}.static.flickr.com/${item.server}/${item.id}_${item.secret}.jpg`;
 
             photos.push({
                 title: item.title,
-                url: url
+                url: url,
+                width: item.width_m,
+                height: item.height_m
             });
         }
 
