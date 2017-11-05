@@ -1,29 +1,44 @@
 import React from 'react';
 import ImageGridItem from './ImageGridItem';
 
-var ImageGridRow = function(startIndex, maxWidth, maxHeight, spacing, offsetY) {
-    this.items = [];
-    this.offsetX = 0;
-    this.offsetY = offsetY;
+/**
+ * Assists ImageGrid with positioning and sizing images in a single justified row.
+ * 
+ * @param {number} startIndex The index of the first image in its parent collection.
+ * @param {number} maxWidth The maximum width of the row.
+ * @param {number} maxHeight The maximum height of the row.
+ * @param {number} spacing The amount of space added between items.
+ * @param {number} offsetY The starting offset on the y-axis.
+ */
+const ImageGridRow = function(startIndex, maxWidth, maxHeight, spacing, offsetY) {
     this.isFull = false;
     this.computedHeight = maxHeight;
+    
+    var items = [];
+    var offsetX = 0;
 
+    /**
+     * Adds a photo to the row. 
+     */
     this.addPhoto = function(photo) {
         const scale = maxHeight / photo.height;
         const scaledWidth = photo.width * scale;
 
-        this.items.push({
+        items.push({
             photo: photo,
             scale: scale
         });
 
-        this.offsetX += scaledWidth + spacing;
-        this.isFull = this.offsetX >= maxWidth;
+        offsetX += scaledWidth + spacing;
+        this.isFull = offsetX >= maxWidth;
     }
 
+    /**
+     * Creates and appends a collection of ImageGridItem made from the photos in this row.
+     */
     this.createItems = function(array) {
-        for (let i = 0; i < this.items.length; i++) {
-            const item = this.items[i];
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
 
             array.push((
                 <ImageGridItem
@@ -39,10 +54,12 @@ var ImageGridRow = function(startIndex, maxWidth, maxHeight, spacing, offsetY) {
         }
     }
 
+    /**
+     * Finalizes the row by repositioning and resizing the images to fit inside the row.
+     */
     this.finalize = function() {
-        const items = this.items;
-        const widthOfImages = this.offsetX - (items.length - 1) * spacing;
-        const toTrim = Math.max(this.offsetX, maxWidth) - maxWidth;
+        const widthOfImages = offsetX - (items.length - 1) * spacing;
+        const toTrim = Math.max(offsetX, maxWidth) - maxWidth;
         const scale = (widthOfImages - toTrim) / widthOfImages;
         const targetHeight = maxHeight * scale;
         let x = 0;
