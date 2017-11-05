@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "flickr-react",
   "version": "1.0.0",
   "description": "A flickr search implementation using React.",
