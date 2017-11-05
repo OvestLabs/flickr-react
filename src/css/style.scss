@@ -113,6 +113,7 @@ button:focus {
             padding: $offset 0;
             line-height: 1.3em;
             border-bottom: $border-size solid rgba($border-color, .05);
+            cursor: pointer;
         }
     }
 }
