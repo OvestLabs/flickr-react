@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 
+/**
+ * Represents a single photo item in ImageGrid.
+ */
 class ImageGridItem extends React.Component {
     constructor(props) {
         super(props);
