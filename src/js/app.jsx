@@ -25,6 +25,7 @@ class App extends React.Component {
         this.handleHistoryClick = this.handleHistoryClick.bind(this);
         this.handleLoadMore = this.handleLoadMore.bind(this);
         this.handleHistorySelected = this.handleHistorySelected.bind(this);
+        this.handleHistoryExit = this.handleHistoryExit.bind(this);
     }
 
     componentDidMount() {
@@ -154,10 +155,24 @@ class App extends React.Component {
         this.fetchPhotos(query, 1);
     }
 
+    handleHistoryExit() {
+        this.setState({
+            showHistory: false
+        });
+    }
+
     renderHistory() {
-        return this.state.showHistory
-            ? (<HistoryList items={this.state.history} onSelected={this.handleHistorySelected} />)
-            : null;
+        if (!this.state.showHistory) {
+            return null;
+        }
+
+        return (
+            <HistoryList 
+                ref='history' 
+                items={this.state.history} 
+                onSelected={this.handleHistorySelected}
+                onExit={this.handleHistoryExit} />
+        );
     }
 
     renderLoader() {
