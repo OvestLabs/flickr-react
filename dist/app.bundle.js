@@ -1027,6 +1027,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/**
+ * Represents a single photo item in ImageGrid.
+ */
 var ImageGridItem = function (_React$Component) {
     _inherits(ImageGridItem, _React$Component);
 
@@ -21558,6 +21561,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/**
+ * A component that renders a justified grid of photos with endless scrolling support.
+ */
 var ImageGrid = function (_React$Component) {
     _inherits(ImageGrid, _React$Component);
 
@@ -21711,29 +21717,44 @@ var _ImageGridItem2 = _interopRequireDefault(_ImageGridItem);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * Assists ImageGrid with positioning and sizing images in a single justified row.
+ * 
+ * @param {number} startIndex The index of the first image in its parent collection.
+ * @param {number} maxWidth The maximum width of the row.
+ * @param {number} maxHeight The maximum height of the row.
+ * @param {number} spacing The amount of space added between items.
+ * @param {number} offsetY The starting offset on the y-axis.
+ */
 var ImageGridRow = function ImageGridRow(startIndex, maxWidth, maxHeight, spacing, offsetY) {
-    this.items = [];
-    this.offsetX = 0;
-    this.offsetY = offsetY;
     this.isFull = false;
     this.computedHeight = maxHeight;
 
+    var items = [];
+    var offsetX = 0;
+
+    /**
+     * Adds a photo to the row. 
+     */
     this.addPhoto = function (photo) {
         var scale = maxHeight / photo.height;
         var scaledWidth = photo.width * scale;
 
-        this.items.push({
+        items.push({
             photo: photo,
             scale: scale
         });
 
-        this.offsetX += scaledWidth + spacing;
-        this.isFull = this.offsetX >= maxWidth;
+        offsetX += scaledWidth + spacing;
+        this.isFull = offsetX >= maxWidth;
     };
 
+    /**
+     * Creates and appends a collection of ImageGridItem made from the photos in this row.
+     */
     this.createItems = function (array) {
-        for (var i = 0; i < this.items.length; i++) {
-            var item = this.items[i];
+        for (var i = 0; i < items.length; i++) {
+            var item = items[i];
 
             array.push(_react2.default.createElement(_ImageGridItem2.default, {
                 key: startIndex + i,
@@ -21747,10 +21768,12 @@ var ImageGridRow = function ImageGridRow(startIndex, maxWidth, maxHeight, spacin
         }
     };
 
+    /**
+     * Finalizes the row by repositioning and resizing the images to fit inside the row.
+     */
     this.finalize = function () {
-        var items = this.items;
-        var widthOfImages = this.offsetX - (items.length - 1) * spacing;
-        var toTrim = Math.max(this.offsetX, maxWidth) - maxWidth;
+        var widthOfImages = offsetX - (items.length - 1) * spacing;
+        var toTrim = Math.max(offsetX, maxWidth) - maxWidth;
         var scale = (widthOfImages - toTrim) / widthOfImages;
         var targetHeight = maxHeight * scale;
         var x = 0;
@@ -21802,6 +21825,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/**
+ * Renders a collection of previously searched queries.
+ */
 var HistoryList = function (_React$Component) {
     _inherits(HistoryList, _React$Component);
 
