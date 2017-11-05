@@ -1127,7 +1127,7 @@ var App = function (_React$Component) {
         _this.state = {
             photos: [],
             history: [],
-            query: 'kittens',
+            query: '',
             lastQuery: null,
             showHistory: false,
             currentPage: 0,
@@ -1318,7 +1318,7 @@ var App = function (_React$Component) {
                 { className: 'empty centered-content' },
                 'Let\'s get started!',
                 _react2.default.createElement('br', null),
-                'Enter your search query above.'
+                'Give me something to search.'
             );
         }
     }, {
@@ -1338,7 +1338,13 @@ var App = function (_React$Component) {
                     _react2.default.createElement(
                         'div',
                         { className: 'search centered-content' },
-                        _react2.default.createElement('input', { type: 'text', value: this.state.query, onChange: this.handleQueryChange, onKeyUp: this.handleSearchKeyUp }),
+                        _react2.default.createElement('input', {
+                            type: 'text',
+                            value: this.state.query,
+                            onChange: this.handleQueryChange,
+                            onKeyUp: this.handleSearchKeyUp,
+                            placeholder: 'Search'
+                        }),
                         _react2.default.createElement(
                             'button',
                             { onClick: this.handleHistoryClick, disabled: noHistory },

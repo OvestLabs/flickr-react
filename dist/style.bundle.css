@@ -43,6 +43,8 @@ button:focus {
     font-size: 21px;
     color: #666;
     min-width: 0; }
+    .search input::placeholder {
+      color: rgba(102, 102, 102, 0.25); }
   .search button {
     padding: 0;
     margin: 0 16px 0 8px;
