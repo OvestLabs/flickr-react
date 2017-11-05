@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import ImageGrid from './components/ImageGrid';
 import HistoryList from './components/HistoryList';
 
-import '../css/style.css';
+import '../css/style.scss';
 
 class App extends React.Component {
     constructor(props) {
@@ -28,7 +28,7 @@ class App extends React.Component {
     }
 
     fetchPhotos(query, page) {
-        const url = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=3e7cc266ae2b0e0d78e279ce8e361736&format=json&nojsoncallback=1&safe_search=1&text=${query}&page=${page}`;
+        const url = `https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=3e7cc266ae2b0e0d78e279ce8e361736&format=json&nojsoncallback=1&safe_search=1&extras=url_s&text=${query}&page=${page}`;
 
         this.setState({
             isFetching: true,
@@ -57,11 +57,18 @@ class App extends React.Component {
 
         for (var i = 0; i < results.length; i++) {
             const item = results[i];
-            const url = `https://farm${item.farm}.static.flickr.com/${item.server}/${item.id}_${item.secret}.jpg`;
+
+            if (!item.width_s || !item.height_s) {
+                continue;
+            }
+
+            //const url = `https://farm${item.farm}.static.flickr.com/${item.server}/${item.id}_${item.secret}.jpg`;
 
             photos.push({
                 title: item.title,
-                url: url
+                url: item.url_s,
+                width: item.width_s,
+                height: item.height_s
             });
         }
 

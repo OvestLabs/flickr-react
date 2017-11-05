@@ -28,8 +28,10 @@ module.exports = {
                 use: ['babel-loader']
             },
             {
-                test: /\.css$/,
-                loader: ExtractTextPlugin.extract({use: 'css-loader'})
+                test: /\.scss$/,
+                use: ExtractTextPlugin.extract({
+                    use: ['css-loader','sass-loader']
+                })
             },
             {
                 test: /\.(png|jpg|gif|svg)$/,
