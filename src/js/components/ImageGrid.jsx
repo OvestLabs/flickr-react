@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import ImageGridItem from './ImageGridItem';
 import ImageGridRow from './ImageGridRow';
 
+/**
+ * A component that renders a justified grid of photos with endless scrolling support.
+ */
 class ImageGrid extends React.Component {
     constructor(props) {
         super(props);
