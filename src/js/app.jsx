@@ -179,7 +179,7 @@ class App extends React.Component {
             return <div className='empty centered-content'>Oops! There are no matches for “{state.lastQuery}”.<br/>Please try broadening your search.</div>;
         }
         
-        return <div className='empty centered-content'>Let's get started!<br/>Enter your search query above.</div>;
+        return <div className='empty centered-content'>Let's get started!<br/>Give me something to search.</div>;
     }
 
     render() {
