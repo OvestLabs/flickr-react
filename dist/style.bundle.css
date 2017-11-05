@@ -1,0 +1,127 @@
+* {
+  margin: 0;
+  padding: 0; }
+
+body {
+  font: 100% Helvetica, Arial, sans-serif;
+  background-color: #f3f5f6;
+  color: #666; }
+
+header {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  position: fixed;
+  width: 100%;
+  height: 61px;
+  top: 0;
+  z-index: 99; }
+
+input:focus,
+button:focus {
+  outline-width: 0;
+  outline: none; }
+
+.centered-content {
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto; }
+
+.search {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%; }
+  .search input {
+    flex: 1 100%;
+    padding: 0px 8px 0px 32px;
+    margin: 0 8px 0 15px;
+    background: url(c36e3ef34aee7287fca70affddad2eb6.svg) no-repeat center left;
+    background-size: 18px 18px;
+    border: none;
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
+    font-size: 21px;
+    color: #666;
+    min-width: 0; }
+  .search button {
+    padding: 0;
+    margin: 0 16px 0 8px;
+    background: transparent url(0b10e505a409b5039e029d6c1bc77ee5.svg) no-repeat center center;
+    background-size: contain;
+    border: none;
+    text-indent: -9999px;
+    width: 30px;
+    height: 30px; }
+    .search button:disabled {
+      opacity: .25; }
+
+.imageGrid {
+  margin-top: 66px;
+  position: relative; }
+  .imageGrid .item {
+    position: absolute;
+    background-color: rgba(102, 102, 102, 0.1);
+    overflow: hidden; }
+    .imageGrid .item img {
+      display: none; }
+    .imageGrid .item .loaded {
+      animation: show .2s;
+      display: block; }
+
+.history {
+  position: fixed;
+  width: 100%;
+  top: 53px;
+  left: -8px;
+  z-index: 100; }
+  .history .centered-content {
+    display: flex;
+    flex-direction: row-reverse; }
+  .history ul {
+    list-style-type: none;
+    list-style-position: none;
+    padding: 0.5em 1em;
+    width: 200px;
+    height: 200px;
+    overflow-y: scroll;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 5px; }
+    .history ul li {
+      padding: 8px 0;
+      line-height: 1.3em;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      cursor: pointer; }
+
+.loader {
+  border: 2px solid white;
+  border-top: 2px solid rgba(102, 102, 102, 0.75);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin .75s linear infinite;
+  margin: 100px auto; }
+
+.empty {
+  text-align: center;
+  font-size: 19px;
+  line-height: 1.5em;
+  margin-top: 100px; }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
+
+@keyframes show {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+@media screen and (max-width: 700px) {
+  .centered-content {
+    max-width: 100%; }
+  .imageGrid {
+    margin-left: 5px; } }
