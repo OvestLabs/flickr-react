@@ -87,12 +87,6 @@ class ImageGrid extends React.Component {
             row = null;
         }
 
-        if (row) {
-            row.finalize();
-            row.createItems(items);
-            offsetY += row.computedHeight + spacing;
-        }
-
         return {
             items: items,
             height: offsetY
