@@ -87,7 +87,7 @@ button:focus {
 
     .item {
         position: absolute;
-        background-color: #ccc;
+        background-color: rgba($foreground-color, .1);
         overflow: hidden;
 
         img {
