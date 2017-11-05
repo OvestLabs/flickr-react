@@ -12,7 +12,7 @@ class App extends React.Component {
         this.state = {
             photos: [],
             history: [],
-            query: '',
+            query: 'kittens',
             lastQuery: null,
             showHistory: false,
             currentPage: 0,
@@ -25,6 +25,13 @@ class App extends React.Component {
         this.handleHistoryClick = this.handleHistoryClick.bind(this);
         this.handleLoadMore = this.handleLoadMore.bind(this);
         this.handleHistorySelected = this.handleHistorySelected.bind(this);
+    }
+
+    componentDidMount() {
+        const query = this.state.query;
+
+        this.fetchPhotos(query, 1);
+        this.addToHistory(query);
     }
 
     fetchPhotos(query, page) {
@@ -179,7 +186,7 @@ class App extends React.Component {
             return <div className='empty centered-content'>Oops! There are no matches for “{state.lastQuery}”.<br/>Please try broadening your search.</div>;
         }
         
-        return <div className='empty centered-content'>Let's get started!<br/>Give me something to search.</div>;
+        return null;
     }
 
     render() {
