@@ -54,10 +54,7 @@ class ImageGrid extends React.Component {
 
     renderItems() {
         if (!this.bounds) {
-            return {
-                items: [],
-                height: 0
-            };
+            return [];
         }
 
         const rowWidth = this.bounds.width; 
@@ -87,17 +84,20 @@ class ImageGrid extends React.Component {
             row = null;
         }
 
-        return {
-            items: items,
-            height: offsetY
-        };
+        return items;
     }
 
     render() {
         const items = this.renderItems();
+        let height = 0;
+
+        if (items.length > 0) {
+            const lastItem = items[items.length - 1];
+            height = lastItem.props.offsetY + lastItem.props.height
+        }
 
         return (
-            <div className='imageGrid centered-content' style={{height:`${items.height}px`}}>{items.items}</div>
+            <div className='imageGrid centered-content' style={{height:`${height}px`}}>{items}</div>
         )
     }
 };
