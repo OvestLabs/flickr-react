@@ -1143,6 +1143,7 @@ var App = function (_React$Component) {
         _this.handleHistoryClick = _this.handleHistoryClick.bind(_this);
         _this.handleLoadMore = _this.handleLoadMore.bind(_this);
         _this.handleHistorySelected = _this.handleHistorySelected.bind(_this);
+        _this.handleHistoryExit = _this.handleHistoryExit.bind(_this);
         return _this;
     }
 
@@ -1283,9 +1284,24 @@ var App = function (_React$Component) {
             this.fetchPhotos(query, 1);
         }
     }, {
+        key: 'handleHistoryExit',
+        value: function handleHistoryExit() {
+            this.setState({
+                showHistory: false
+            });
+        }
+    }, {
         key: 'renderHistory',
         value: function renderHistory() {
-            return this.state.showHistory ? _react2.default.createElement(_HistoryList2.default, { items: this.state.history, onSelected: this.handleHistorySelected }) : null;
+            if (!this.state.showHistory) {
+                return null;
+            }
+
+            return _react2.default.createElement(_HistoryList2.default, {
+                ref: 'history',
+                items: this.state.history,
+                onSelected: this.handleHistorySelected,
+                onExit: this.handleHistoryExit });
         }
     }, {
         key: 'renderLoader',
@@ -21837,20 +21853,65 @@ var HistoryList = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (HistoryList.__proto__ || Object.getPrototypeOf(HistoryList)).call(this, props));
 
         _this.handleItemClick = _this.handleItemClick.bind(_this);
+        _this.handleDocumentClick = _this.handleDocumentClick.bind(_this);
+        _this.handleDocumentScroll = _this.handleDocumentScroll.bind(_this);
         return _this;
     }
 
     _createClass(HistoryList, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            document.addEventListener('click', this.handleDocumentClick);
+            document.addEventListener('scroll', this.handleDocumentScroll);
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            document.removeEventListener('click', this.handleDocumentClick);
+            document.removeEventListener('scroll', this.handleDocumentScroll);
+        }
+    }, {
         key: 'handleItemClick',
         value: function handleItemClick(index, e) {
-            e.preventDefault();
-
             var query = this.props.items[index];
             var onSelected = this.props.onSelected;
 
             if (typeof onSelected === 'function') {
                 onSelected(query);
             }
+        }
+    }, {
+        key: 'handleDocumentClick',
+        value: function handleDocumentClick(e) {
+            var onExit = this.props.onExit;
+
+            if (typeof onExit !== 'function') {
+                return;
+            }
+
+            var node = _reactDom2.default.findDOMNode(this).children[0];
+            var target = e.target;
+
+            while (target != null) {
+                if (target.parentElement == node) {
+                    return;
+                }
+
+                target = target.parentElement;
+            }
+
+            onExit();
+        }
+    }, {
+        key: 'handleDocumentScroll',
+        value: function handleDocumentScroll() {
+            var onExit = this.props.onExit;
+
+            if (typeof onExit !== 'function') {
+                return;
+            }
+
+            onExit();
         }
     }, {
         key: 'render',
@@ -21888,7 +21949,8 @@ var HistoryList = function (_React$Component) {
 
 HistoryList.defaultProps = {
     items: [],
-    onSelected: function onSelected() {/* left blank intentionally */}
+    onSelected: function onSelected() {/* left blank intentionally */},
+    onExit: function onExit() {/* left blank intentionally */}
 };
 
 exports.default = HistoryList;
