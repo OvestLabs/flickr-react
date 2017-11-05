@@ -1,47 +1,62 @@
-var ImageGridRow = function(maxWidth, maxHeight, spacing, offsetY) {
-    this.images = [];
+import React from 'react';
+import ImageGridItem from './ImageGridItem';
+
+var ImageGridRow = function(startIndex, maxWidth, maxHeight, spacing, offsetY) {
+    this.items = [];
     this.offsetX = 0;
     this.offsetY = offsetY;
     this.isFull = false;
     this.computedHeight = maxHeight;
 
-    this.addImage = function(image) {
-        const imageWidth = image.imageWidth;
-        const imageHeight = image.imageHeight;
-        const scale = maxHeight / imageHeight;
-        const scaledWidth = imageWidth * scale;
+    this.addPhoto = function(photo) {
+        const scale = maxHeight / photo.height;
+        const scaledWidth = photo.width * scale;
 
-        this.offsetX += scaledWidth + spacing;
-
-        this.images.push({
-            image: image,
+        this.items.push({
+            photo: photo,
             scale: scale
         });
 
+        this.offsetX += scaledWidth + spacing;
         this.isFull = this.offsetX >= maxWidth;
     }
 
+    this.createItems = function(array) {
+        for (let i = 0; i < this.items.length; i++) {
+            const item = this.items[i];
+
+            array.push((
+                <ImageGridItem
+                    key={startIndex+i} 
+                    url={item.photo.url}
+                    title={item.photo.title}
+                    width={item.targetWidth}
+                    height={item.targetHeight}
+                    offsetX={item.offsetX}
+                    offsetY={item.offsetY}
+                />
+            ));
+        }
+    }
+
     this.finalize = function() {
-        const images = this.images;
-        const widthOfImages = this.offsetX - (images.length - 1) * spacing;
+        const items = this.items;
+        const widthOfImages = this.offsetX - (items.length - 1) * spacing;
         const toTrim = Math.max(this.offsetX, maxWidth) - maxWidth;
         const scale = (widthOfImages - toTrim) / widthOfImages;
         const targetHeight = maxHeight * scale;
         let x = 0;
 
-        for (let i = 0; i < images.length; i++) {
-            const item = images[i];
-            const image = item.image;
-            const targetWidth = image.imageWidth * item.scale * scale;
-            
-            image.setState({
-                width: targetWidth,
-                height: targetHeight,
-                offsetX: x,
-                offsetY: offsetY
-            });
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
 
-            x += targetWidth + spacing;
+            item.scale *= scale;
+            item.targetWidth = item.photo.width * item.scale;
+            item.targetHeight = targetHeight;
+            item.offsetX = x;
+            item.offsetY = offsetY;
+            
+            x += item.targetWidth + spacing;
         }
 
         this.computedHeight = targetHeight;
