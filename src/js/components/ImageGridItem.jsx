@@ -9,12 +9,7 @@ class ImageGridItem extends React.Component {
     }
 
     handleImageLoad(e) {
-        // const element = e.currentTarget;
-        // const onLoad = this.props.onLoad;
-
-        // if (typeof onLoad === 'function') {
-        //     onLoad(this);
-        // }
+        e.currentTarget.style.display = 'block';
     }
 
     render() {

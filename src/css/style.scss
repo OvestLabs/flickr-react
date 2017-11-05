@@ -88,6 +88,10 @@ button:focus {
     .item {
         position: absolute;
         background-color: #ccc;
+
+        img {
+            display:none;
+        }
     }
 }
 
