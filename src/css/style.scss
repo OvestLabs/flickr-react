@@ -87,10 +87,16 @@ button:focus {
 
     .item {
         position: absolute;
-        background-color: #ccc;
+        background-color: rgba($foreground-color, .1);
+        overflow: hidden;
 
         img {
             display:none;
+        }
+
+        .loaded {
+            animation: show .2s;
+            display:block;
         }
     }
 }
@@ -153,6 +159,11 @@ button:focus {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+@keyframes show {
+    0% { opacity: 0 }
+    100% {opacity: 1 }
 }
 
 @media screen and (max-width: 700px) {

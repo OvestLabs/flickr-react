@@ -23,6 +23,10 @@ class ImageGrid extends React.Component {
         this.forceUpdate();
     }
 
+    componentDidUpdate() {
+        this.handleDocumentScroll();
+    }
+
     componentWillUnmount() {
         window.removeEventListener('resize', this.handleWindowResize);
         document.removeEventListener('scroll', this.handleDocumentScroll);
@@ -45,7 +49,7 @@ class ImageGrid extends React.Component {
         }
 
         this.updateBounds();
-        const threshold = this.bounds.bottom - this.props.maxRowHeight * 5;
+        const threshold = this.bounds.bottom - this.props.maxRowHeight * 10;
 
         if (threshold <= window.innerHeight) {
             onLoadMore();

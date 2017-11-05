@@ -5,11 +5,17 @@ class ImageGridItem extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            isLoaded: false
+        };
+
         this.handleImageLoad = this.handleImageLoad.bind(this);
     }
 
     handleImageLoad(e) {
-        e.currentTarget.style.display = 'block';
+        this.setState({
+            isLoaded: true
+        });
     }
 
     render() {
@@ -26,10 +32,11 @@ class ImageGridItem extends React.Component {
                 }}>
                 <img 
                     src={props.url} 
-                    width={props.width} 
-                    height={props.height} 
+                    width={Math.ceil(props.width)} 
+                    height={Math.ceil(props.height)} 
                     onLoad={this.handleImageLoad} 
-                    alt={props.title}/>
+                    alt={props.title}
+                    className={this.state.isLoaded ? 'loaded' : ''}/>
             </div>
         );
     }
