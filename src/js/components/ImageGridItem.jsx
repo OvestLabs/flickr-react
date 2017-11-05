@@ -32,8 +32,8 @@ class ImageGridItem extends React.Component {
                 }}>
                 <img 
                     src={props.url} 
-                    width={props.width} 
-                    height={props.height} 
+                    width={Math.ceil(props.width)} 
+                    height={Math.ceil(props.height)} 
                     onLoad={this.handleImageLoad} 
                     alt={props.title}
                     className={this.state.isLoaded ? 'loaded' : ''}/>
