@@ -1,5 +1,12 @@
 # flickr-react
-A Flickr search implementation built with React.
+A Flickr search implementation built with React. 
+
+- Supports endless scrolling 
+- Automatically fetches more images when scrolling to the bottom of the view
+- Search history is retained
+- UI is responsive and mobile-friendly
+
+Test it here https://ovestlabs.github.io/flickr-react/dist/index.html
 
 ## Installation
 First, grab the repo:
