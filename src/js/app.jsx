@@ -12,7 +12,7 @@ class App extends React.Component {
         this.state = {
             photos: [],
             history: [],
-            query: 'kittens',
+            query: '',
             lastQuery: null,
             showHistory: false,
             currentPage: 0,
@@ -192,7 +192,13 @@ class App extends React.Component {
             <div>
                 <header>
                     <div className='search centered-content'>
-                        <input type="text" value={this.state.query} onChange={this.handleQueryChange} onKeyUp={this.handleSearchKeyUp}/>
+                        <input 
+                            type="text"
+                            value={this.state.query} 
+                            onChange={this.handleQueryChange} 
+                            onKeyUp={this.handleSearchKeyUp}
+                            placeholder="Search"
+                        />
                         <button onClick={this.handleHistoryClick} disabled={noHistory}>History</button>
                     </div>
                 </header>
