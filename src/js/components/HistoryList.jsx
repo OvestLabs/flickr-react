@@ -10,14 +10,17 @@ class HistoryList extends React.Component {
 
         this.handleItemClick = this.handleItemClick.bind(this);
         this.handleDocumentClick = this.handleDocumentClick.bind(this);
+        this.handleDocumentScroll = this.handleDocumentScroll.bind(this);
     }
 
     componentDidMount() {
         document.addEventListener('click', this.handleDocumentClick);
+        document.addEventListener('scroll', this.handleDocumentScroll);
     }
 
     componentWillUnmount() {
         document.removeEventListener('click', this.handleDocumentClick);
+        document.removeEventListener('scroll', this.handleDocumentScroll);
     }
 
     handleItemClick(index, e) {
@@ -45,6 +48,16 @@ class HistoryList extends React.Component {
             }
 
             target = target.parentElement;
+        }
+
+        onExit();
+    }
+
+    handleDocumentScroll() {
+        const onExit = this.props.onExit;
+
+        if (typeof onExit !== 'function') {
+            return;
         }
 
         onExit();
