@@ -1127,7 +1127,7 @@ var App = function (_React$Component) {
         _this.state = {
             photos: [],
             history: [],
-            query: '',
+            query: 'kittens',
             lastQuery: null,
             showHistory: false,
             currentPage: 0,
@@ -1144,6 +1144,14 @@ var App = function (_React$Component) {
     }
 
     _createClass(App, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var query = this.state.query;
+
+            this.fetchPhotos(query, 1);
+            this.addToHistory(query);
+        }
+    }, {
         key: 'fetchPhotos',
         value: function fetchPhotos(query, page) {
             var _this2 = this;
@@ -1313,13 +1321,7 @@ var App = function (_React$Component) {
                 );
             }
 
-            return _react2.default.createElement(
-                'div',
-                { className: 'empty centered-content' },
-                'Let\'s get started!',
-                _react2.default.createElement('br', null),
-                'Give me something to search.'
-            );
+            return null;
         }
     }, {
         key: 'render',
